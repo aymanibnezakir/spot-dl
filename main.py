@@ -7,6 +7,7 @@ import update_deps
 import spotify
 import downloader
 
+
 CONFIG_FILE = os.path.join(os.environ.get("TEMP"), "spot_dl_data.json")
 
 
@@ -44,24 +45,38 @@ def deps_check():
 if __name__ == "__main__":
     deps_check()
     args = argument_parser.parse()
-    # print(args)
 
     if args.sync: update_deps.update_all(ytdlp_path=YTDLP_PATH)
 
-    if args.set_download_directory:
-        data = {"download_location": args.set_download_directory}
-        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=True)
+    if not args.dir:
 
-    if os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-            settings = json.load(f)
+        if args.set_download_directory:
+            data = {"download_location": args.set_download_directory}
 
-        DOWNLOAD_DIR = settings['download_location']
+            try:
+                with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+                    json.dump(data, f, indent=2, ensure_ascii=True)
+            except PermissionError:
+                print("Permission error: Could not save new download directory.\nPlease use the temporary path injection using argument: `--dir [DIR]`.")
+                sys.exit(1)
+            sys.exit(0)
+
+        if os.path.exists(CONFIG_FILE):
+            with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+                settings = json.load(f)
+
+            DOWNLOAD_DIR = settings['download_location']
+
+        else:
+            print("Please set the download path first. Use arg: '--set-download-directory'.")
+            sys.exit(1)
 
     else:
-        print("Please set the download path first. Use arg: '--set-download-directory'.")
-        sys.exit(1)
+        if os.path.exists(args.dir):
+            print(f"Using temporary download directory: {args.dir}")
+        else:
+            print(f"Invalid path provided: {args.dir}")
+
 
     if args.show_download_directory:
         print(DOWNLOAD_DIR)

@@ -40,6 +40,11 @@ def parse():
         nargs="+"
     )
 
+    download_args.add_argument(
+        "--dir",
+        help="Bypass saved download directory and use another for current session.",
+    )
+
     args = parser.parse_args()
 
     download_used = any([
