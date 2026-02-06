@@ -102,6 +102,7 @@ if __name__ == "__main__":
                 if not os.path.exists(download_dir_for_playlist):
                     os.mkdir(download_dir_for_playlist)
             except:
+                print(f"Failed to create folder for playlist:{playlist_name}.\nTracks will be downloaded in this directory: {DOWNLOAD_DIR}")
                 download_dir_for_playlist = DOWNLOAD_DIR
 
             print(f"Downloading playlist ({i}/{total_playlists}): {playlist_name} [{playlist_url}]")
