@@ -1,0 +1,22 @@
+# Virtual env
+.venv/
+venv/
+env/
+uv.lock
+
+# IDE
+.idea/
+.vscode/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.python-version
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Optional local tests
+test*
+page
