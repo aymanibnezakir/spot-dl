@@ -1,7 +1,28 @@
-import os.path
+import os
 import sys
 import subprocess
+import gettext
 from ytmusicapi import YTMusic
+
+
+
+# IMPORTANT:
+# This function makes gettext.translation("base", …) return a fake object instead of crashing after running as a compiled program.
+# The library doesn't actually need translations here, so this is safe.
+_original_translation = gettext.translation
+def silent_translation(*args, **kwargs):
+    try:
+        return _original_translation(*args, **kwargs)
+    except FileNotFoundError:
+        # return a dummy Translations object that always returns the msgid
+        class DummyTranslations:
+            def gettext(self, message):     return message
+            def ngettext(self, s, p, n):   return s if n == 1 else p
+            def pgettext(self, c, m):      return m
+            def npgettext(self, c, s, p, n): return s if n == 1 else p
+        return DummyTranslations()
+
+gettext.translation = silent_translation
 
 
 def fetch_song_link(artist, song_name) -> str | None:
