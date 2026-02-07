@@ -4,7 +4,7 @@ import sys
 
 def parse():
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(allow_abbrev=False)
 
     non_download_args = parser.add_argument_group()
 
@@ -17,12 +17,14 @@ def parse():
 
     non_download_args.add_argument(
         "--show-download-directory",
+        "--show-download-dir",
         help="Show the current download directory.",
         action="store_true"
     )
 
     non_download_args.add_argument(
         "--set-download-directory",
+        "--set-download-dir",
         help="Set/change download directory."
     )
 
@@ -68,10 +70,11 @@ def parse():
         print("Playlist feature has not been implemented yet. Please proceed with single tracks for now.")
         sys.exit(1)
 
-    for url in args.url:
-        if not url.startswith("https://open.spotify.com/") or len(url) < 40:
-            print(f"invalid url: {url}\nerror: The provided URL is not a valid Spotify track or playlist link. Expected format: https://open.spotify.com/...")
-            sys.exit(1)
+    if args.url:
+        for url in args.url:
+            if not url.startswith("https://open.spotify.com/") or len(url) < 40:
+                print(f"invalid url: {url}\nerror: The provided URL is not a valid Spotify track or playlist link. Expected format: https://open.spotify.com/...")
+                sys.exit(1)
 
     return args
 
