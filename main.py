@@ -74,8 +74,10 @@ if __name__ == "__main__":
     else:
         if os.path.exists(args.dir):
             print(f"Using temporary download directory: {args.dir}")
+            DOWNLOAD_DIR = args.dir
         else:
             print(f"Invalid path provided: {args.dir}")
+            sys.exit(1)
 
 
     if args.show_download_directory:
