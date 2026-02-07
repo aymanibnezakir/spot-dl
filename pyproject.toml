@@ -5,7 +5,6 @@ description = "Spotify Track/Playlist downloader."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "beautifulsoup4>=4.14.3",
     "pyinstaller>=6.18.0",
     "requests>=2.32.5",
     "spotifyscraper>=2.1.5",
