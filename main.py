@@ -12,12 +12,16 @@ CONFIG_FILE = os.path.join(os.environ.get("TEMP"), "spot_dl_data.json")
 
 
 def get_this_path():
-    if getattr(sys, 'frozen', False):
-        # Running as compiled EXE
+    if hasattr(sys, "_MEIPASS"):
+        # PyInstaller compatibility (optional)
         return os.path.dirname(sys.executable)
-    else:
-        # Running as .py script
-        return os.path.dirname(os.path.abspath(__file__))
+
+    # Nuitka onefile real path
+    if "__compiled__" in globals():
+        return os.path.dirname(os.path.abspath(sys.argv[0]))
+
+    # Normal Python script
+    return os.path.dirname(os.path.abspath(__file__))
     
 
 THIS_PATH = get_this_path()
